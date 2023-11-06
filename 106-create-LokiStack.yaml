@@ -1,0 +1,48 @@
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: lokistack-netobserv
+  namespace: netobserv
+spec:
+  limits:
+    global:
+      ingestion:
+        ingestionBurstSize: 40
+        ingestionRate: 20
+        maxGlobalStreamsPerTenant: 25000
+      queries:
+        maxChunksPerQuery: 2000000
+        maxEntriesLimitPerQuery: 10000
+        maxQuerySeries: 3000
+        queryTimeout: 3m
+      retention:
+        days: 31
+        streams:
+        - days: 15
+          priority: 1
+          selector: '{log_type="audit"}'
+        - days: 15
+          priority: 1
+          selector: '{log_type="infrastructure"}'
+  managementState: Managed
+  replicationFactor: 1
+  rules:
+    enabled: true
+    namespaceSelector:
+      matchLabels:
+        openshift.io/cluster-monitoring: "true"
+    selector:
+      matchLabels:
+        openshift.io/cluster-monitoring: "true"
+  size: 1x.extra-small
+  storage:
+    schemas:
+    - effectiveDate: "2022-06-01"
+      version: v12
+    secret:
+      name: loki-s3-netobserv
+      type: s3
+  storageClassName: lvms-vg1 #storageClass from where the Loki Operator is intalled
+  tenants:
+    mode: openshift-network
+
