@@ -20,30 +20,8 @@ spec:
           cpu: 100m
           memory: 50Mi
       sampling: 50
-    ipfix:
-      cacheActiveTimeout: 20s
-      cacheMaxFlows: 400
-      clusterNetworkOperator:
-        namespace: openshift-network-operator
-      forceSampleAll: false
-      ovnKubernetes:
-        containerName: ovnkube-node
-        daemonSetName: ovnkube-node
-        namespace: ovn-kubernetes
-      sampling: 400
     type: EBPF ## EBPF or ipfix
   consolePlugin:
-    autoscaler:
-      maxReplicas: 3
-      metrics:
-      - resource:
-          name: cpu
-          target:
-            averageUtilization: 50
-            type: Utilization
-        type: Resource
-      minReplicas: 1
-      status: DISABLED
     imagePullPolicy: IfNotPresent
     logLevel: info
     port: 9001
@@ -79,23 +57,6 @@ spec:
         memory: 50Mi
   deploymentModel: DIRECT
   exporters: []
-  kafka:
-    address: kafka-cluster-kafka-bootstrap.netobserv
-    tls:
-      caCert:
-        certFile: ca.crt
-        name: kafka-cluster-cluster-ca-cert
-        namespace: ""
-        type: secret
-      enable: false
-      insecureSkipVerify: false
-      userCert:
-        certFile: user.crt
-        certKey: user.key
-        name: flp-kafka
-        namespace: ""
-        type: secret
-    topic: network-flows
   loki:
     authToken: FORWARD
     batchSize: 10485760
@@ -152,7 +113,7 @@ spec:
     logLevel: info
     logTypes: FLOWS
     metrics:
-      ignoreTags:
+      ignoreTags: #can remove all or some of these tags and you will see metrics on the dashboard related to Netobserv
       - flows
       - bytes
       - packets
