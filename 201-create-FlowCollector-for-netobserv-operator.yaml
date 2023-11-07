@@ -103,13 +103,6 @@ spec:
     dropUnusedFields: true
     enableKubeProbes: true
     healthPort: 8080
-    imagePullPolicy: IfNotPresent
-    kafkaConsumerAutoscaler:
-      maxReplicas: 3
-      status: DISABLED
-    kafkaConsumerBatchSize: 10485760
-    kafkaConsumerQueueCapacity: 1000
-    kafkaConsumerReplicas: 3
     logLevel: info
     logTypes: FLOWS
     metrics:
